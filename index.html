@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ANGKATAN 21 — ABHIPRAYA ANAGATA</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #080a0f;
+      --deep: #0d1117;
+      --card-bg: #111620;
+      --border: rgba(255,255,255,0.06);
+      --accent: #00e5ff;
+      --accent2: #7b61ff;
+      --accent3: #ff6b35;
+      --gold: #f5c842;
+      --white: #f0f4ff;
+      --muted: #8a94a6;
+      --glow: 0 0 40px rgba(0,229,255,0.15);
+    }
+
+    *, *::before, *::after {
+      margin: 0; padding: 0;
+      box-sizing: border-box;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--black);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
+
+    /* ── NAVBAR ── */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      padding: 0 5%;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(8,10,15,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo img {
+      height: 38px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 0 8px rgba(0,229,255,0.4));
+      transition: filter 0.3s, transform 0.3s;
+    }
+
+    .nav-logo img:hover {
+      filter: drop-shadow(0 0 14px rgba(0,229,255,0.75));
+      transform: scale(1.06);
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 8px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: all 0.3s;
+      border: 1px solid transparent;
+    }
+
+    nav ul li a:hover {
+      color: var(--accent);
+      border-color: rgba(0,229,255,0.2);
+      background: rgba(0,229,255,0.05);
+    }
+
+    /* ── SECTION BASE ── */
+    section {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 5% 80px;
+      position: relative;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+      opacity: 0;
+      animation: fadeUp 0.8s forwards;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      letter-spacing: 4px;
+      text-align: center;
+      line-height: 1;
+      background: linear-gradient(135deg, var(--white) 0%, var(--muted) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── HOME ── */
+    #home {
+      background: var(--black);
+      overflow: hidden;
+      text-align: center;
+      gap: 0;
+      min-height: 100vh;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: flex-start;
+      position: relative;
+    }
+
+    /* Top half — 16:9 bg image */
+    .home-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      /* 16:9 ratio = 56.25% of width */
+      height: 56.25vw;
+      max-height: 50vh;
+      background: url('img/bg.png') center/cover no-repeat;
+      z-index: 0;
+    }
+
+    /* Dark overlay on top of image */
+    .home-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(8,10,15,0.35) 0%,
+        rgba(8,10,15,0.55) 70%,
+        rgba(8,10,15,1) 100%
+      );
+    }
+
+    /* Bottom half — animated grid */
+    .grid-lines {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      /* covers the bottom 50% of the section */
+      top: 50%;
+      background-image:
+        linear-gradient(rgba(0,229,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,255,0.05) 1px, transparent 1px);
+      background-size: 60px 60px;
+      animation: gridMove 20s linear infinite;
+      z-index: 0;
+    }
+
+    /* Fade edge between image and grid */
+    .home-split-fade {
+      position: absolute;
+      left: 0; right: 0;
+      /* sits right at the midpoint */
+      top: calc(50% - 80px);
+      height: 160px;
+      background: linear-gradient(to bottom, transparent, var(--black) 80%);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    @keyframes gridMove {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(60px); }
+    }
+
+    /* Glowing orbs */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .orb-1 {
+      width: 500px; height: 500px;
+      background: rgba(0,229,255,0.06);
+      top: -100px; left: -100px;
+      animation: orbFloat 12s ease-in-out infinite;
+    }
+    .orb-2 {
+      width: 400px; height: 400px;
+      background: rgba(123,97,255,0.07);
+      bottom: 0px; right: -50px;
+      animation: orbFloat 16s ease-in-out infinite reverse;
+    }
+    @keyframes orbFloat {
+      0%, 100% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(30px, -30px) scale(1.05); }
+    }
+
+    .home-content {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      min-height: 100vh;
+      padding: 80px 20px 60px;
+      text-align: center;
+    }
+
+    .home-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: rgba(0,229,255,0.08);
+      border: 1px solid rgba(0,229,255,0.2);
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      color: var(--accent);
+      opacity: 0;
+      animation: fadeUp 0.6s 0.2s forwards;
+    }
+
+    .home-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--accent);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.5); }
+    }
+
+    #home h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 10vw, 8rem);
+      letter-spacing: 8px;
+      line-height: 0.95;
+      background: linear-gradient(135deg, #ffffff 0%, var(--accent) 50%, var(--accent2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.4s forwards;
+      text-shadow: none;
+    }
+
+    .home-sub {
+      font-size: 0.85rem;
+      letter-spacing: 4px;
+      color: var(--muted);
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.6s forwards;
+    }
+
+    .home-stats {
+      display: flex;
+      gap: 40px;
+      margin-top: 20px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.8s forwards;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.2rem;
+      color: var(--accent);
+      display: block;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .home-divider {
+      width: 1px;
+      height: 50px;
+      background: linear-gradient(to bottom, transparent, var(--muted), transparent);
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      color: var(--muted);
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeIn 1s 1.5s forwards;
+      z-index: 3;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollLine {
+      0% { transform: scaleY(0); transform-origin: top; }
+      50% { transform: scaleY(1); transform-origin: top; }
+      51% { transform: scaleY(1); transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; }
+    }
+
+    /* ── PRODY (TEACHER) ── */
+    #teacher {
+      background: var(--deep);
+      text-align: center;
+      gap: 60px;
+    }
+
+    #teacher::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+
+    .teacher-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .prody-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .prody-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: default;
+    }
+
+    .prody-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0,229,255,0.05) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .prody-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(0,229,255,0.25);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,229,255,0.1);
+    }
+
+    .prody-card:hover::before { opacity: 1; }
+
+    .prody-card:nth-child(2) { border-color: rgba(123,97,255,0.15); }
+    .prody-card:nth-child(2):hover { border-color: rgba(123,97,255,0.35); }
+    .prody-card:nth-child(2)::before {
+      background: linear-gradient(135deg, rgba(123,97,255,0.05) 0%, transparent 60%);
+    }
+
+    .prody-card:nth-child(3) { border-color: rgba(255,107,53,0.15); }
+    .prody-card:nth-child(3):hover { border-color: rgba(255,107,53,0.35); }
+    .prody-card:nth-child(3)::before {
+      background: linear-gradient(135deg, rgba(255,107,53,0.05) 0%, transparent 60%);
+    }
+
+    .prody-logo-wrap {
+      width: 160px; height: 160px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .prody-logo-wrap img {
+      width: 140px;
+      height: 140px;
+      object-fit: contain;
+    }
+
+    .prody-tag {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      padding: 4px 12px;
+      border-radius: 100px;
+      text-transform: uppercase;
+    }
+
+    .prody-card:nth-child(1) .prody-tag { background: rgba(0,229,255,0.1); color: var(--accent); }
+    .prody-card:nth-child(2) .prody-tag { background: rgba(123,97,255,0.1); color: var(--accent2); }
+    .prody-card:nth-child(3) .prody-tag { background: rgba(255,107,53,0.1); color: var(--accent3); }
+
+    .prody-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 3px;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    .prody-desc {
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    /* ── MEMBERS ── */
+    #member {
+      background: var(--black);
+      gap: 50px;
+    }
+
+    #member::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent2), transparent);
+    }
+
+    .member-header {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .filter-btn {
+      padding: 8px 20px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      color: var(--muted);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+      background: rgba(0,229,255,0.1);
+      border-color: rgba(0,229,255,0.4);
+      color: var(--accent);
+    }
+
+    .member-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 16px;
+      width: 100%;
+      max-width: 1100px;
+    }
+
+    .member-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: default;
+      position: relative;
+    }
+
+    .member-card:hover {
+      transform: translateY(-6px) scale(1.02);
+      border-color: rgba(0,229,255,0.25);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.5), 0 0 20px rgba(0,229,255,0.05);
+      z-index: 2;
+    }
+
+    .member-img-wrap {
+      width: 100%;
+      aspect-ratio: 1;
+      overflow: hidden;
+      background: var(--deep);
+      position: relative;
+    }
+
+    .member-img-wrap::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 50%;
+      background: linear-gradient(to top, rgba(8,10,15,0.8), transparent);
+    }
+
+    .member-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s;
+    }
+
+    .member-card:hover .member-img-wrap img { transform: scale(1.08); }
+
+    .member-info {
+      padding: 10px 12px 12px;
+    }
+
+    .member-name {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--white);
+      text-transform: uppercase;
+    }
+
+    .member-prody {
+      font-size: 0.62rem;
+      color: var(--muted);
+      margin-top: 2px;
+      letter-spacing: 1px;
+    }
+
+    .member-card[data-prody="TKJ"] .member-prody { color: var(--accent); }
+    .member-card[data-prody="TSM"] .member-prody { color: var(--accent2); }
+    .member-card[data-prody="TKR"] .member-prody { color: var(--accent3); }
+
+    /* ── MOMENTS ── */
+    #moment {
+      background: var(--deep);
+      gap: 50px;
+    }
+
+    #moment::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent3), transparent);
+    }
+
+    .moment-header {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .moment-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      width: 100%;
+      max-width: 1000px;
+    }
+
+    .moment-item {
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      transition: all 0.4s;
+      cursor: pointer;
+      /* semua item portrait 2:3, seragam */
+      aspect-ratio: 2 / 3;
+    }
+
+    /* hapus span — item pertama sama ukurannya */
+    .moment-item:first-child {
+      grid-column: span 1;
+      aspect-ratio: 2 / 3;
+    }
+
+    .moment-item:hover {
+      border-color: rgba(0,229,255,0.2);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      transform: translateY(-4px) scale(1.02);
+    }
+
+    .moment-item img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      transition: transform 0.5s;
+    }
+
+    .moment-item:hover img { transform: scale(1.04); }
+
+    .moment-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(8,10,15,0.7) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      display: flex;
+      align-items: flex-end;
+      padding: 20px;
+    }
+
+    .moment-item:hover .moment-overlay { opacity: 1; }
+
+    .moment-overlay-text {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--black);
+      border-top: 1px solid var(--border);
+      padding: 40px 5%;
+      text-align: center;
+      position: relative;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 10%; right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent);
+    }
+
+    .footer-brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 6px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+    }
+
+    .footer-text {
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 2px;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .prody-grid { grid-template-columns: 1fr; max-width: 400px; }
+      .member-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; }
+      nav ul { gap: 2px; }
+      nav ul li a { padding: 6px 10px; font-size: 0.7rem; }
+      .home-stats { gap: 20px; }
+      /* 2 kolom portrait di tablet & mobile */
+      .moment-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .moment-item:first-child { grid-column: span 1; }
+    }
+
+    @media (max-width: 480px) {
+      .filter-tabs { gap: 6px; }
+      .filter-btn { padding: 6px 14px; font-size: 0.7rem; }
+      /* 2 kolom tetap di hp kecil, portrait proporsional */
+      .moment-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-logo">
+    <img src="logo/logo.png" alt="Logo Angkatan 21">
+  </div>
+  <ul>
+    <li><a href="#home">Home</a></li>
+    <li><a href="#teacher">Prody</a></li>
+    <li><a href="#member">Member</a></li>
+    <li><a href="#moment">Moment</a></li>
+  </ul>
+</nav>
+
+<!-- HOME -->
+<section id="home">
+  <div class="home-bg"></div>
+  <div class="home-split-fade"></div>
+  <div class="grid-lines"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <div class="home-content">
+    <div class="home-badge">Angkatan 21</div>
+    <h1>ABHIPRAYA<br>ANAGATA</h1>
+    <p class="home-sub">Angkatan 21 SMK NURIS JEMBER — Mempunyai harapan dan tujuan dengan semangat untuk meraih masa depan yang cerah</p>
+
+    <div class="home-stats">
+      <div class="stat-item">
+        <span class="stat-num">52</span>
+        <span class="stat-label">Member</span>
+      </div>
+      <div class="home-divider"></div>
+      <div class="stat-item">
+        <span class="stat-num">3</span>
+        <span class="stat-label">Jurusan</span>
+      </div>
+      <div class="home-divider"></div>
+      <div class="stat-item">
+        <span class="stat-num">'21</span>
+        <span class="stat-label">Angkatan</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- PRODY -->
+<section id="teacher">
+  <div class="teacher-header reveal">
+    <span class="section-label">Program Studi</span>
+    <h2 class="section-title">JURUSAN</h2>
+  </div>
+
+  <div class="prody-grid">
+    <div class="prody-card reveal">
+      <span class="prody-tag">TKJ</span>
+      <div class="prody-logo-wrap">
+        <img src="logo/tkj.png" alt="TKJ Logo">
+      </div>
+      <h3 class="prody-name">Teknik Komputer<br>Jaringan</h3>
+      <p class="prody-desc">Mendalami teknologi jaringan komputer, sistem operasi, dan infrastruktur IT modern</p>
+    </div>
+    <div class="prody-card reveal" style="transition-delay:0.1s">
+      <span class="prody-tag">TSM</span>
+      <div class="prody-logo-wrap">
+        <img src="logo/tsm.png" alt="TSM Logo">
+      </div>
+      <h3 class="prody-name">Teknik Sepeda<br>Motor</h3>
+      <p class="prody-desc">Mempelajari perawatan, perbaikan, dan teknologi terkini pada sepeda motor</p>
+    </div>
+    <div class="prody-card reveal" style="transition-delay:0.2s">
+      <span class="prody-tag">TKR</span>
+      <div class="prody-logo-wrap">
+        <img src="logo/tkr.png" alt="TKR Logo">
+      </div>
+      <h3 class="prody-name">Teknik Kendaraan<br>Ringan</h3>
+      <p class="prody-desc">Berfokus pada perawatan dan perbaikan kendaraan ringan serta teknologi otomotif</p>
+    </div>
+  </div>
+</section>
+
+<!-- MEMBERS -->
+<section id="member">
+  <div class="member-header reveal">
+    <span class="section-label">Anggota</span>
+    <h2 class="section-title">MEMBER</h2>
+  </div>
+
+  <div class="filter-tabs reveal">
+    <button class="filter-btn active" onclick="filterMembers('ALL')">Semua</button>
+    <button class="filter-btn" onclick="filterMembers('TKJ')">TKJ</button>
+    <button class="filter-btn" onclick="filterMembers('TSM')">TSM</button>
+    <button class="filter-btn" onclick="filterMembers('TKR')">TKR</button>
+  </div>
+
+  <div class="member-grid" id="memberGrid">
+    <!-- TKJ PUTRA -->
+    <div class="member-card" data-prody="TKJ"><div class="member-img-wrap"><img src="putra/adit.jpg" alt="ADIT" loading="lazy"></div><div class="member-info"><p class="member-name">Adit</p><p class="member-prody">TKJ '21</p></div></div>
+    <div class="member-card" data-prody="TKJ"><div class="member-img-wrap"><img src="putra/alif.jpg" alt="ALIF" loading="lazy"></div><div class="member-info"><p class="member-name">Alif</p><p class="member-prody">TKJ '21</p></div></div>
+    <div class="member-card" data-prody="TKJ"><div class="member-img-wrap"><img src="putra/aril.jpg" alt="ARIL" loading="lazy"></div><div class="member-info"><p class="member-name">Aril</p><p class="member-prody">TKJ '21</p></div></div>
+    <div class="member-card" data-prody="TKJ"><div class="member-img-wrap"><img src="putra/arva.jpg" alt="ARVA" loading="lazy"></div><div class="member-info"><p class="member-name">Arva</p><p class="member-prody">TKJ '21</p></div></div>
+    <div class="member-card" data-prody="TKJ"><div class="member-img-wrap"><img src="putra/asfar.jpg" alt="ASFAR" loading="lazy"></div><div class="member-info"><p class="member-name">Asfar</p><p class="member-prody">TKJ '21</p></div></div>
+    <div class="member-card" data-prody="TKJ"><div class="member-img-wrap"><img src="putra/fahri.jpg" alt="FAKHRI" loading="lazy"></div><div class="member-info"><p class="member-name">Fakhri</p><p class="member-prody">TKJ '21</p></div></div>
+    <div class="member-card" data-prody="TKJ"><div class="member-img-wrap"><img src="putra/ilul.jpg" alt="ILUL" loading="lazy"></div><div class="member-info"><p class="member-name">Ilul</p><p class="member-prody">TKJ '21</p></div></div>
+    <div class="member-card" data-prody="TKJ"><div class="member-img-wrap"><img src="putra/irul.jpg" alt="IRUL" loading="lazy"></div><div class="member-info"><p class="member-name">Irul</p><p class="member-prody">TKJ '21</p></div></div>
+    <div class="member-card" data-prody="TKJ"><div class="member-img-wrap"><img src="putra/kafur.jpg" alt="KAFUR" loading="lazy"></div><div class="member-info"><p class="member-name">Kafur</p><p class="member-prody">TKJ '21</p></div></div>
+    <div class="member-card" data-prody="TKJ"><div class="member-img-wrap"><img src="putra/krisna.jpg" alt="KRISNA" loading="lazy"></div><div class="member-info"><p class="member-name">Krisna</p><p class="member-prody">TKJ '21</p></div></div>
+    <div class="member-card" data-prody="TKJ"><div class="member-img-wrap"><img src="putra/nizar.jpg" alt="NIZAR" loading="lazy"></div><div class="member-info"><p class="member-name">Nizar</p><p class="member-prody">TKJ '21</p></div></div>
+    <div class="member-card" data-prody="TKJ"><div class="member-img-wrap"><img src="putra/putra.jpg" alt="PUTRA" loading="lazy"></div><div class="member-info"><p class="member-name">Putra</p><p class="member-prody">TKJ '21</p></div></div>
+    <div class="member-card" data-prody="TKJ"><div class="member-img-wrap"><img src="putra/rafa.jpg" alt="RAFA" loading="lazy"></div><div class="member-info"><p class="member-name">Rafa</p><p class="member-prody">TKJ '21</p></div></div>
+    <div class="member-card" data-prody="TKJ"><div class="member-img-wrap"><img src="putra/rehan.jpg" alt="REHAN" loading="lazy"></div><div class="member-info"><p class="member-name">Rehan</p><p class="member-prody">TKJ '21</p></div></div>
+    <div class="member-card" data-prody="TKJ"><div class="member-img-wrap"><img src="putra/rendy.jpg" alt="RENDY" loading="lazy"></div><div class="member-info"><p class="member-name">Rendy</p><p class="member-prody">TKJ '21</p></div></div>
+    <div class="member-card" data-prody="TKJ"><div class="member-img-wrap"><img src="putra/reza.jpg" alt="REZA" loading="lazy"></div><div class="member-info"><p class="member-name">Reza</p><p class="member-prody">TKJ '21</p></div></div>
+    <div class="member-card" data-prody="TKJ"><div class="member-img-wrap"><img src="putra/rifky.jpg" alt="RIFKY" loading="lazy"></div><div class="member-info"><p class="member-name">Rifky</p><p class="member-prody">TKJ '21</p></div></div>
+    <div class="member-card" data-prody="TKJ"><div class="member-img-wrap"><img src="putra/ubet.jpg" alt="UBET" loading="lazy"></div><div class="member-info"><p class="member-name">Ubet</p><p class="member-prody">TKJ '21</p></div></div>
+    <div class="member-card" data-prody="TKJ"><div class="member-img-wrap"><img src="putra/yaqi.jpg" alt="YAQI" loading="lazy"></div><div class="member-info"><p class="member-name">Yaqi</p><p class="member-prody">TKJ '21</p></div></div>
+    <div class="member-card" data-prody="TKJ"><div class="member-img-wrap"><img src="putra/wildan.jpg" alt="WILDAN" loading="lazy"></div><div class="member-info"><p class="member-name">Wildan</p><p class="member-prody">TKJ '21</p></div></div>
+    <div class="member-card" data-prody="TKJ"><div class="member-img-wrap"><img src="putra/willy.jpg" alt="WILLY" loading="lazy"></div><div class="member-info"><p class="member-name">Willy</p><p class="member-prody">TKJ '21</p></div></div>
+    <!-- TSM -->
+    <div class="member-card" data-prody="TSM"><div class="member-img-wrap"><img src="putra/bily.jpg" alt="BILY" loading="lazy"></div><div class="member-info"><p class="member-name">Bily</p><p class="member-prody">TSM '21</p></div></div>
+    <div class="member-card" data-prody="TSM"><div class="member-img-wrap"><img src="putra/wahyu.jpg" alt="WAHYU" loading="lazy"></div><div class="member-info"><p class="member-name">Wahyu</p><p class="member-prody">TSM '21</p></div></div>
+    <div class="member-card" data-prody="TSM"><div class="member-img-wrap"><img src="putra/ipul.jpg" alt="IPUL" loading="lazy"></div><div class="member-info"><p class="member-name">Ipul</p><p class="member-prody">TSM '21</p></div></div>
+    <div class="member-card" data-prody="TSM"><div class="member-img-wrap"><img src="putra/nadzrul.jpg" alt="NADZRUL" loading="lazy"></div><div class="member-info"><p class="member-name">Nadzrul</p><p class="member-prody">TSM '21</p></div></div>
+    <div class="member-card" data-prody="TSM"><div class="member-img-wrap"><img src="putra/angga.jpg" alt="ANGGA" loading="lazy"></div><div class="member-info"><p class="member-name">Angga</p><p class="member-prody">TSM '21</p></div></div>
+    <div class="member-card" data-prody="TSM"><div class="member-img-wrap"><img src="putra/wildantsm.jpg" alt="WILDAN TSM" loading="lazy"></div><div class="member-info"><p class="member-name">Wildan</p><p class="member-prody">TSM '21</p></div></div>
+    <div class="member-card" data-prody="TSM"><div class="member-img-wrap"><img src="putra/agies.jpg" alt="AGIES" loading="lazy"></div><div class="member-info"><p class="member-name">Agies</p><p class="member-prody">TSM '21</p></div></div>
+    <div class="member-card" data-prody="TSM"><div class="member-img-wrap"><img src="putra/baihaki.jpg" alt="BAIHAKI" loading="lazy"></div><div class="member-info"><p class="member-name">Baihaki</p><p class="member-prody">TSM '21</p></div></div>
+    <div class="member-card" data-prody="TSM"><div class="member-img-wrap"><img src="putra/nabil.jpg" alt="NABIL" loading="lazy"></div><div class="member-info"><p class="member-name">Nabil</p><p class="member-prody">TSM '21</p></div></div>
+    <div class="member-card" data-prody="TSM"><div class="member-img-wrap"><img src="putra/indra.jpg" alt="INDRA" loading="lazy"></div><div class="member-info"><p class="member-name">Indra</p><p class="member-prody">TSM '21</p></div></div>
+    <!-- TKR -->
+    <div class="member-card" data-prody="TKR"><div class="member-img-wrap"><img src="putra/rezatkr.jpg" alt="REZA TKR" loading="lazy"></div><div class="member-info"><p class="member-name">Reza</p><p class="member-prody">TKR '21</p></div></div>
+    <div class="member-card" data-prody="TKR"><div class="member-img-wrap"><img src="putra/dhani.jpg" alt="DHANI" loading="lazy"></div><div class="member-info"><p class="member-name">Dhani</p><p class="member-prody">TKR '21</p></div></div>
+    <div class="member-card" data-prody="TKR"><div class="member-img-wrap"><img src="putra/afin.jpg" alt="AFIN" loading="lazy"></div><div class="member-info"><p class="member-name">Afin</p><p class="member-prody">TKR '21</p></div></div>
+    <div class="member-card" data-prody="TKR"><div class="member-img-wrap"><img src="putra/bagus.jpg" alt="BAGUS" loading="lazy"></div><div class="member-info"><p class="member-name">Bagus</p><p class="member-prody">TKR '21</p></div></div>
+    <div class="member-card" data-prody="TKR"><div class="member-img-wrap"><img src="putra/aji.jpg" alt="AJI" loading="lazy"></div><div class="member-info"><p class="member-name">Aji</p><p class="member-prody">TKR '21</p></div></div>
+    <div class="member-card" data-prody="TKR"><div class="member-img-wrap"><img src="putra/wilujeng.jpg" alt="WILUJENG" loading="lazy"></div><div class="member-info"><p class="member-name">Wilujeng</p><p class="member-prody">TKR '21</p></div></div>
+    <div class="member-card" data-prody="TKR"><div class="member-img-wrap"><img src="putra/dafa.jpg" alt="DAFA" loading="lazy"></div><div class="member-info"><p class="member-name">Dafa</p><p class="member-prody">TKR '21</p></div></div>
+    <div class="member-card" data-prody="TKR"><div class="member-img-wrap"><img src="putra/arjuna.jpg" alt="ARJUNA" loading="lazy"></div><div class="member-info"><p class="member-name">Arjuna</p><p class="member-prody">TKR '21</p></div></div>
+    <div class="member-card" data-prody="TKR"><div class="member-img-wrap"><img src="putra/aqil.jpg" alt="AQIL" loading="lazy"></div><div class="member-info"><p class="member-name">Aqil</p><p class="member-prody">TKR '21</p></div></div>
+    <div class="member-card" data-prody="TKR"><div class="member-img-wrap"><img src="putra/aldi.jpg" alt="ALDI" loading="lazy"></div><div class="member-info"><p class="member-name">Aldi</p><p class="member-prody">TKR '21</p></div></div>
+    <div class="member-card" data-prody="TKR"><div class="member-img-wrap"><img src="putra/redha.jpg" alt="REDHA" loading="lazy"></div><div class="member-info"><p class="member-name">Redha</p><p class="member-prody">TKR '21</p></div></div>
+    <!-- PUTRI TKJ -->
+    <div class="member-card" data-prody="TKJ"><div class="member-img-wrap"><img src="putri/afifa.jpg" alt="AFIFA" loading="lazy"></div><div class="member-info"><p class="member-name">Afifa</p><p class="member-prody">TKJ '21</p></div></div>
+    <div class="member-card" data-prody="TKJ"><div class="member-img-wrap"><img src="putri/dina.jpg" alt="DINA" loading="lazy"></div><div class="member-info"><p class="member-name">Dina</p><p class="member-prody">TKJ '21</p></div></div>
+    <div class="member-card" data-prody="TKJ"><div class="member-img-wrap"><img src="putri/dita.jpg" alt="DITA" loading="lazy"></div><div class="member-info"><p class="member-name">Dita</p><p class="member-prody">TKJ '21</p></div></div>
+    <div class="member-card" data-prody="TKJ"><div class="member-img-wrap"><img src="putri/dona.jpg" alt="DONA" loading="lazy"></div><div class="member-info"><p class="member-name">Dona</p><p class="member-prody">TKJ '21</p></div></div>
+    <div class="member-card" data-prody="TKJ"><div class="member-img-wrap"><img src="putri/gwen.jpg" alt="GWEN" loading="lazy"></div><div class="member-info"><p class="member-name">Gwen</p><p class="member-prody">TKJ '21</p></div></div>
+    <div class="member-card" data-prody="TKJ"><div class="member-img-wrap"><img src="putri/insiro.jpg" alt="INSIRO" loading="lazy"></div><div class="member-info"><p class="member-name">Insiro</p><p class="member-prody">TKJ '21</p></div></div>
+    <div class="member-card" data-prody="TKJ"><div class="member-img-wrap"><img src="putri/minda.jpg" alt="MINDA" loading="lazy"></div><div class="member-info"><p class="member-name">Minda</p><p class="member-prody">TKJ '21</p></div></div>
+    <div class="member-card" data-prody="TKJ"><div class="member-img-wrap"><img src="putri/prischa.jpg" alt="PRISCHA" loading="lazy"></div><div class="member-info"><p class="member-name">Prischa</p><p class="member-prody">TKJ '21</p></div></div>
+    <div class="member-card" data-prody="TKJ"><div class="member-img-wrap"><img src="putri/titin.jpg" alt="TITIN" loading="lazy"></div><div class="member-info"><p class="member-name">Titin</p><p class="member-prody">TKJ '21</p></div></div>
+    <div class="member-card" data-prody="TKJ"><div class="member-img-wrap"><img src="putri/zahra.jpg" alt="ZAHRA" loading="lazy"></div><div class="member-info"><p class="member-name">Zahra</p><p class="member-prody">TKJ '21</p></div></div>
+    <div class="member-card" data-prody="TKJ"><div class="member-img-wrap"><img src="putri/zakia.jpg" alt="ZAKIA" loading="lazy"></div><div class="member-info"><p class="member-name">Zakia</p><p class="member-prody">TKJ '21</p></div></div>
+  </div>
+</section>
+
+<!-- MOMENTS -->
+<section id="moment">
+  <div class="moment-header reveal">
+    <span class="section-label">Kenangan</span>
+    <h2 class="section-title">MOMENT</h2>
+  </div>
+
+  <div class="moment-grid reveal">
+    <div class="moment-item">
+      <img src="Moment/moment.jpeg" alt="Moment 1" loading="lazy">
+      <div class="moment-overlay"><span class="moment-overlay-text">✦ Kenangan Bersama</span></div>
+    </div>
+    <div class="moment-item">
+      <img src="Moment/moment2.jpeg" alt="Moment 2" loading="lazy">
+      <div class="moment-overlay"><span class="moment-overlay-text">✦ Angkatan 21</span></div>
+    </div>
+    <div class="moment-item">
+      <img src="Moment/moment3.jpeg" alt="Moment 3" loading="lazy">
+      <div class="moment-overlay"><span class="moment-overlay-text">✦ Kebersamaan</span></div>
+    </div>
+    <div class="moment-item">
+      <img src="Moment/moment5.jpeg" alt="Moment 4" loading="lazy">
+      <div class="moment-overlay"><span class="moment-overlay-text">✦ Tak Terlupakan</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">ABHIPRAYA ANAGATA</div>
+  <p class="footer-text">Angkatan 21 &nbsp;·&nbsp; TKJ · TSM · TKR &nbsp;·&nbsp; SMK NURIS JEMBER</p>
+</footer>
+
+<script>
+  // Filter members
+  function filterMembers(prody) {
+    const cards = document.querySelectorAll('.member-card');
+    const btns = document.querySelectorAll('.filter-btn');
+
+    btns.forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+
+    cards.forEach((card, i) => {
+      const match = prody === 'ALL' || card.dataset.prody === prody;
+      card.style.transition = `opacity 0.3s ${i * 0.01}s, transform 0.3s ${i * 0.01}s`;
+      if (match) {
+        card.style.display = '';
+        setTimeout(() => { card.style.opacity = '1'; card.style.transform = ''; }, 10);
+      } else {
+        card.style.opacity = '0';
+        card.style.transform = 'scale(0.9)';
+        setTimeout(() => { card.style.display = 'none'; }, 300);
+      }
+    });
+  }
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  reveals.forEach(el => observer.observe(el));
+
+  // Stagger member cards on load
+  const memberCards = document.querySelectorAll('.member-card');
+  const cardObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const cards = entry.target.querySelectorAll('.member-card');
+        cards.forEach((card, i) => {
+          card.style.opacity = '0';
+          card.style.transform = 'translateY(20px)';
+          setTimeout(() => {
+            card.style.transition = `opacity 0.4s ease, transform 0.4s ease`;
+            card.style.opacity = '1';
+            card.style.transform = '';
+          }, i * 25);
+        });
+        cardObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.05 });
+
+  cardObserver.observe(document.getElementById('memberGrid'));
+</script>
+</body>
+</html>
